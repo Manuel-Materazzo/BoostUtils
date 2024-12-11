@@ -1,11 +1,17 @@
+import sklearn
 import pandas as pd
 from pandas import DataFrame
 from hyperopt import hp
 
 from src.enums.objective import Objective
 from src.models.model_wrapper import ModelWrapper
-from sklearn.ensemble import HistGradientBoostingClassifier
 from sklearn.inspection import permutation_importance
+
+if sklearn.__version__ == '1.5.2':
+    disabled = False
+    from sklearn.ensemble import HistGradientBoostingClassifier
+else:
+    disabled = True
 
 
 class HGBClassifierWrapper(ModelWrapper):
@@ -18,6 +24,10 @@ class HGBClassifierWrapper(ModelWrapper):
         return Objective.CLASSIFICATION
 
     def get_base_model(self, iterations, params):
+        if disabled:
+            print("ERROR: Sklearn version mismatch")
+            return None
+
         params.update({
             'random_state': 0,
         })
@@ -66,9 +76,17 @@ class HGBClassifierWrapper(ModelWrapper):
         }
 
     def fit(self, X, y, iterations, params=None):
+        if disabled:
+            print("ERROR: Sklearn version mismatch")
+            return
+
         self.train_until_optimal(X, None, y, None, params=params)
 
     def train_until_optimal(self, train_X, validation_X, train_y, validation_y, params=None):
+        if disabled:
+            print("ERROR: Sklearn version mismatch")
+            return
+
         params = params or {}
         params = params.copy()
         params.update({
@@ -88,12 +106,24 @@ class HGBClassifierWrapper(ModelWrapper):
         self.importances = permutation_importance(self.model, train_X, train_y, n_repeats=10, random_state=0)
 
     def predict(self, X) -> any:
+        if disabled:
+            print("ERROR: Sklearn version mismatch")
+            return None
+
         return self.model.predict(X)
 
     def predict_proba(self, X):
+        if disabled:
+            print("ERROR: Sklearn version mismatch")
+            return None
+
         return self.model.predict_proba(X)[:, 1]
 
     def get_best_iteration(self) -> int:
+        if disabled:
+            print("ERROR: Sklearn version mismatch")
+            return None
+
         return self.model.n_iter_
 
     def get_loss(self) -> dict[str, dict[str, list[float]]]:
