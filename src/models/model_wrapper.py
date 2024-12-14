@@ -9,8 +9,9 @@ class ModelWrapper(ModelInferenceWrapper):
     Interface for wrapping a Model in order to standardize methods and properties names
     """
 
-    def __init__(self):
+    def __init__(self, early_stopping_rounds=10):
         self.model = None
+        self.early_stopping_rounds = early_stopping_rounds
 
     @abstractmethod
     def get_objective(self) -> Objective:

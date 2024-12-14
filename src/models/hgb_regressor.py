@@ -3,12 +3,11 @@ import pandas as pd
 from pandas import DataFrame
 from hyperopt import hp
 
-from src.enums.objective import Objective
-from src.models.model_wrapper import ModelWrapper
-from sklearn.inspection import permutation_importance
-
 if sklearn.__version__ == '1.5.2':
     disabled = False
+    from src.enums.objective import Objective
+    from src.models.model_wrapper import ModelWrapper
+    from sklearn.inspection import permutation_importance
     from sklearn.ensemble import HistGradientBoostingRegressor
 else:
     disabled = True
@@ -16,8 +15,8 @@ else:
 
 class HGBRegressorWrapper(ModelWrapper):
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, early_stopping_rounds=10):
+        super().__init__(early_stopping_rounds=early_stopping_rounds)
         self.importances = None
 
     def get_objective(self) -> Objective:
@@ -93,7 +92,7 @@ class HGBRegressorWrapper(ModelWrapper):
             'random_state': 0,
             'max_iter': 2000,
             'early_stopping': True,
-            'n_iter_no_change': 10
+            'n_iter_no_change': self.early_stopping_rounds
         })
 
         self.model: HistGradientBoostingRegressor = HistGradientBoostingRegressor(

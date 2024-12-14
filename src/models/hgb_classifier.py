@@ -16,8 +16,8 @@ else:
 
 class HGBClassifierWrapper(ModelWrapper):
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, early_stopping_rounds=10):
+        super().__init__(early_stopping_rounds=early_stopping_rounds)
         self.importances = None
 
     def get_objective(self) -> Objective:
@@ -93,7 +93,7 @@ class HGBClassifierWrapper(ModelWrapper):
             'random_state': 0,
             'max_iter': 2000,
             'early_stopping': True,
-            'n_iter_no_change': 10
+            'n_iter_no_change': self.early_stopping_rounds
         })
 
         self.model: HistGradientBoostingClassifier = HistGradientBoostingClassifier(

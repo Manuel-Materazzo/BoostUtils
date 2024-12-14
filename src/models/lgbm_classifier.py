@@ -9,8 +9,8 @@ from src.models.model_wrapper import ModelWrapper
 
 class LGBMClassifierWrapper(ModelWrapper):
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, early_stopping_rounds=10):
+        super().__init__(early_stopping_rounds=early_stopping_rounds)
 
     def get_objective(self) -> Objective:
         return Objective.CLASSIFICATION
@@ -104,7 +104,7 @@ class LGBMClassifierWrapper(ModelWrapper):
             **params
         )
         self.model.fit(train_X, train_y, eval_set=[(validation_X, validation_y)], callbacks=[
-            early_stopping(stopping_rounds=5),
+            early_stopping(stopping_rounds=self.early_stopping_rounds),
         ])
 
     def predict(self, X) -> any:

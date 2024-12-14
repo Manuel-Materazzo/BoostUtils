@@ -9,8 +9,8 @@ from src.models.model_wrapper import ModelWrapper
 
 class LGBMRegressorWrapper(ModelWrapper):
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, early_stopping_rounds=10):
+        super().__init__(early_stopping_rounds=early_stopping_rounds)
 
     def get_objective(self) -> Objective:
         return Objective.REGRESSION

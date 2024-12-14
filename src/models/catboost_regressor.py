@@ -9,8 +9,8 @@ from src.models.model_wrapper import ModelWrapper
 
 class CatBoostRegressorWrapper(ModelWrapper):
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, early_stopping_rounds=10):
+        super().__init__(early_stopping_rounds=early_stopping_rounds)
 
     def get_objective(self) -> Objective:
         return Objective.REGRESSION
@@ -91,7 +91,7 @@ class CatBoostRegressorWrapper(ModelWrapper):
         params.update({
             'random_state': 0,
             'iterations': 2000,
-            'early_stopping_rounds': 5,
+            'early_stopping_rounds': self.early_stopping_rounds,
         })
         self.model: CatBoostRegressor = CatBoostRegressor(
             **params,
