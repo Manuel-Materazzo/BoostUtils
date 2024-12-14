@@ -34,7 +34,6 @@ class XGBClassifierWrapper(ModelWrapper):
             'gamma': 0,
             'subsample': 0.8,
             'colsample_bytree': 0.8,
-            'scale_pos_weight': 1,
             'n_jobs': -1
         }
 
