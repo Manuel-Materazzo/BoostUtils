@@ -1,6 +1,7 @@
 from pandas import DataFrame, Series
 from sklearn.model_selection import GridSearchCV
 from sklearn.pipeline import Pipeline
+from sklearn.metrics import cohen_kappa_score, make_scorer
 
 from src.enums.accuracy_metric import AccuracyMetric
 from src.enums.optimization_direction import OptimizationDirection
@@ -57,7 +58,8 @@ class DefaultGridOptimizer(HyperparameterOptimizer):
             optimal_params = self.__do_grid_search(self.__get_full_pipeline(optimal_br), X, y, step_space, log_level)
 
             # remove 'model__' from every param in order to have clean values
-            fixed_optimal_params = {key[7:]: value for key, value in optimal_params.items() if key.startswith('model__')}
+            fixed_optimal_params = {key[7:]: value for key, value in optimal_params.items() if
+                                    key.startswith('model__')}
 
             # update defaults with new optimal params
             self.params.update(fixed_optimal_params)
@@ -86,6 +88,9 @@ class DefaultGridOptimizer(HyperparameterOptimizer):
                 scoring = 'neg_root_mean_squared_error'
             case AccuracyMetric.AUC:
                 scoring = 'roc_auc'
+            case AccuracyMetric.QWK:
+                # custom scorer for quadratic weighted kappa
+                scoring = make_scorer(cohen_kappa_score, weights="quadratic")
             case _:
                 scoring = self.trainer.metric.value.lower()
 

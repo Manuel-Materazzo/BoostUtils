@@ -5,7 +5,8 @@ import pickle
 import seaborn as sns
 import matplotlib.pyplot as plt
 from pandas import DataFrame, Series
-from sklearn.metrics import confusion_matrix, mean_absolute_error, mean_squared_error, roc_auc_score, accuracy_score
+from sklearn.metrics import confusion_matrix, mean_absolute_error, mean_squared_error, roc_auc_score, accuracy_score, \
+    cohen_kappa_score
 from sklearn.model_selection import KFold, StratifiedGroupKFold, StratifiedKFold, GroupKFold
 
 from src.enums.accuracy_metric import AccuracyMetric
@@ -71,7 +72,6 @@ class Trainer(ABC):
                 return StratifiedGroupKFold(n_splits=5, random_state=0, shuffle=True)
             else:
                 return StratifiedKFold(n_splits=5, random_state=0, shuffle=True)
-
 
     def show_feature_importance(self, X: DataFrame):
         # Apply the same trasformations as the training process
@@ -182,3 +182,5 @@ class Trainer(ABC):
                 return roc_auc_score(real_values, predictions)
             case AccuracyMetric.Accuracy:
                 return accuracy_score(real_values, predictions)
+            case AccuracyMetric.QWK:
+                return cohen_kappa_score(real_values, predictions, weights='quadratic')

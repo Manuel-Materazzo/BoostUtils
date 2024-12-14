@@ -9,3 +9,4 @@ class AccuracyMetric(Enum):
     # Classification
     AUC = "AUC"
     Accuracy = "accuracy"
+    QWK = "QWK"
