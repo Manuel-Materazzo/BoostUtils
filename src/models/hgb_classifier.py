@@ -2,17 +2,18 @@ import sklearn
 import pandas as pd
 from pandas import DataFrame
 from hyperopt import hp
+from packaging.version import Version
 
-from src.enums.objective import Objective
-from src.models.model_wrapper import ModelWrapper
-from sklearn.inspection import permutation_importance
-
-if sklearn.__version__ == '1.5.2':
+if Version(sklearn.__version__) >= Version('1.5.2'):
     disabled = False
+    from src.enums.objective import Objective
+    from src.models.model_wrapper import ModelWrapper
+    from sklearn.inspection import permutation_importance
     from sklearn.ensemble import HistGradientBoostingClassifier
 else:
     disabled = True
 
+version_mismatch = "ERROR: HistGradientBoostingRegressor requires Sklearn >= 1.5.2"
 
 class HGBClassifierWrapper(ModelWrapper):
 
@@ -25,7 +26,7 @@ class HGBClassifierWrapper(ModelWrapper):
 
     def get_base_model(self, iterations, params):
         if disabled:
-            print("ERROR: Sklearn version mismatch")
+            print(version_mismatch)
             return None
 
         params.update({
@@ -77,14 +78,14 @@ class HGBClassifierWrapper(ModelWrapper):
 
     def fit(self, X, y, iterations, params=None):
         if disabled:
-            print("ERROR: Sklearn version mismatch")
+            print(version_mismatch)
             return
 
         self.train_until_optimal(X, None, y, None, params=params)
 
     def train_until_optimal(self, train_X, validation_X, train_y, validation_y, params=None):
         if disabled:
-            print("ERROR: Sklearn version mismatch")
+            print(version_mismatch)
             return
 
         params = params or {}
@@ -107,21 +108,21 @@ class HGBClassifierWrapper(ModelWrapper):
 
     def predict(self, X) -> any:
         if disabled:
-            print("ERROR: Sklearn version mismatch")
+            print(version_mismatch)
             return None
 
         return self.model.predict(X)
 
     def predict_proba(self, X):
         if disabled:
-            print("ERROR: Sklearn version mismatch")
+            print(version_mismatch)
             return None
 
         return self.model.predict_proba(X)[:, 1]
 
     def get_best_iteration(self) -> int:
         if disabled:
-            print("ERROR: Sklearn version mismatch")
+            print(version_mismatch)
             return None
 
         return self.model.n_iter_

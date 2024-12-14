@@ -2,8 +2,9 @@ import sklearn
 import pandas as pd
 from pandas import DataFrame
 from hyperopt import hp
+from packaging.version import Version
 
-if sklearn.__version__ == '1.5.2':
+if Version(sklearn.__version__) >= Version('1.5.2'):
     disabled = False
     from src.enums.objective import Objective
     from src.models.model_wrapper import ModelWrapper
@@ -12,6 +13,7 @@ if sklearn.__version__ == '1.5.2':
 else:
     disabled = True
 
+version_mismatch = "ERROR: HistGradientBoostingRegressor requires Sklearn >= 1.5.2"
 
 class HGBRegressorWrapper(ModelWrapper):
 
@@ -24,7 +26,7 @@ class HGBRegressorWrapper(ModelWrapper):
 
     def get_base_model(self, iterations, params):
         if disabled:
-            print("ERROR: Sklearn version mismatch")
+            print(version_mismatch)
             return None
         params.update({
             'random_state': 0,
@@ -75,7 +77,7 @@ class HGBRegressorWrapper(ModelWrapper):
 
     def fit(self, X, y, iterations, params=None):
         if disabled:
-            print("ERROR: Sklearn version mismatch")
+            print(version_mismatch)
             return None
 
         self.train_until_optimal(X, None, y, None, params=params)
@@ -83,7 +85,7 @@ class HGBRegressorWrapper(ModelWrapper):
     def train_until_optimal(self, train_X, validation_X, train_y, validation_y, params=None):
 
         if disabled:
-            print("ERROR: Sklearn version mismatch")
+            print(version_mismatch)
             return
 
         params = params or {}
@@ -106,7 +108,7 @@ class HGBRegressorWrapper(ModelWrapper):
 
     def predict(self, X) -> any:
         if disabled:
-            print("ERROR: Sklearn version mismatch")
+            print(version_mismatch)
             return None
 
         return self.model.predict(X)
@@ -116,7 +118,7 @@ class HGBRegressorWrapper(ModelWrapper):
 
     def get_best_iteration(self) -> int:
         if disabled:
-            print("ERROR: Sklearn version mismatch")
+            print(version_mismatch)
             return 0
 
         return self.model.n_iter_
