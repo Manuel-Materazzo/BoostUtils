@@ -87,7 +87,7 @@ class Ensemble(ModelInferenceWrapper):
         # return mean accuracy
         return np.mean(self.leaderboard['accuracy'])
 
-    def train(self, X: DataFrame, y: Series):
+    def train(self, X: DataFrame, y: Series) -> ModelInferenceWrapper:
         """
         Trains each model of the ensemble on the whole data.
         :param X:
@@ -113,6 +113,8 @@ class Ensemble(ModelInferenceWrapper):
             # train model
             model = trainer.train_model(X, y, iterations=iterations, params=params)
             self.models.append(model)
+
+        return self
 
     @abstractmethod
     def predict(self, X: DataFrame) -> Series:

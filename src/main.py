@@ -47,7 +47,7 @@ pipeline = HousingPricesCompetitionDTPipeline(X, True)
 preprocessor.preprocess_data(X)
 
 # pick a model, a trainer and an optimizer
-model_type = XGBRegressorWrapper()
+model_type = XGBRegressorWrapper(early_stopping_rounds=10)
 trainer = CachedAccurateCrossTrainer(pipeline, model_type, X, y, metric=AccuracyMetric.MAE, grouping_columns=None)
 optimizer = DefaultGridOptimizer(trainer, model_type, direction=OptimizationDirection.MINIMIZE)
 
