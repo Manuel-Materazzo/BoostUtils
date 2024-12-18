@@ -57,18 +57,30 @@ class OptunaOptimizer(HyperparameterOptimizer):
         # convert hyperopt space to optuna by doing a great deal of dark magic
         for key in self.domain_space:
             # extract arguments of the hpspace
-            space_accessor = self.domain_space[key].pos_args[0].arg
+            args = self.domain_space[key].pos_args
+            space_accessor = args[0].arg
             param_name = space_accessor['label'].obj
             param_type = space_accessor['obj'].name
-            param_low_arg = space_accessor['obj'].arg['low'].obj
-            param_high_arg = space_accessor['obj'].arg['high'].obj
 
             # instantiate the correct optuna space
+            # NB: key could be different from param_name. This allows for parameter pairing (parameterA = parameterB)
             match param_type:
                 case 'uniform':
-                    octuna_space[param_name] = trial.suggest_float(param_name, param_low_arg, param_high_arg)
+                    param_low_arg = space_accessor['obj'].arg['low'].obj
+                    param_high_arg = space_accessor['obj'].arg['high'].obj
+                    octuna_space[key] = trial.suggest_float(param_name, param_low_arg, param_high_arg)
+                case 'loguniform':
+                    param_low_arg = space_accessor['obj'].arg['low'].obj
+                    param_high_arg = space_accessor['obj'].arg['high'].obj
+                    octuna_space[key] = trial.suggest_float(param_name, param_low_arg, param_high_arg, log=True)
                 case 'quniform':
-                    octuna_space[param_name] = trial.suggest_int(param_name, param_low_arg, param_high_arg)
+                    param_low_arg = space_accessor['obj'].arg['low'].obj
+                    param_high_arg = space_accessor['obj'].arg['high'].obj
+                    param_q = space_accessor['obj'].arg['q'].obj
+                    octuna_space[key] = trial.suggest_int(param_name, param_low_arg, param_high_arg, step=param_q)
+                case 'randint':
+                    options = [val.obj for val in args[1:]]  # extract options from extra args
+                    octuna_space[key] = trial.suggest_categorical(param_name, list(options))
 
         accuracy, _, _ = self.trainer.validate_model(self.X, self.y, log_level=0, params=octuna_space)
         return accuracy
