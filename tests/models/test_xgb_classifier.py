@@ -11,6 +11,6 @@ class TestXGBClassifier(ModelWrapperBase):
     @classmethod
     def setUpClass(cls):
         cls.X, cls.y = load_classification_data()
-        cls.model = XGBClassifierWrapper()
+        cls.model = XGBClassifierWrapper(early_stopping_rounds=1)
         cls.base_model = XGBClassifier
         cls.objective = Objective.CLASSIFICATION

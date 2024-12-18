@@ -11,6 +11,6 @@ class TestCatboostClassifier(ModelWrapperBase):
     @classmethod
     def setUpClass(cls):
         cls.X, cls.y = load_classification_data()
-        cls.model = CatBoostClassifierWrapper()
+        cls.model = CatBoostClassifierWrapper(early_stopping_rounds=1)
         cls.base_model = CatBoostClassifier
         cls.objective = Objective.CLASSIFICATION

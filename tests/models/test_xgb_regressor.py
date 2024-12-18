@@ -11,7 +11,7 @@ class TestXGBRegresor(ModelWrapperBase):
     @classmethod
     def setUpClass(cls):
         cls.X, cls.y = load_regression_data()
-        cls.model = XGBRegressorWrapper()
+        cls.model = XGBRegressorWrapper(early_stopping_rounds=1)
         cls.base_model = XGBRegressor
         cls.objective = Objective.REGRESSION
 

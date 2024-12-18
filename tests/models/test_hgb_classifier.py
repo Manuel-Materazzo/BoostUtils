@@ -11,6 +11,6 @@ class TestHgbCatboostClassifier(ModelWrapperBase):
     @classmethod
     def setUpClass(cls):
         cls.X, cls.y = load_classification_data()
-        cls.model = HGBClassifierWrapper()
+        cls.model = HGBClassifierWrapper(early_stopping_rounds=1)
         cls.base_model = HistGradientBoostingClassifier
         cls.objective = Objective.CLASSIFICATION

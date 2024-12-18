@@ -11,6 +11,6 @@ class TestLgbmCatboostClassifier(ModelWrapperBase):
     @classmethod
     def setUpClass(cls):
         cls.X, cls.y = load_classification_data()
-        cls.model = LGBMClassifierWrapper()
+        cls.model = LGBMClassifierWrapper(early_stopping_rounds=1)
         cls.base_model = LGBMClassifier
         cls.objective = Objective.CLASSIFICATION

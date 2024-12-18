@@ -12,6 +12,6 @@ class TestCatboostRegresor(ModelWrapperBase):
     @classmethod
     def setUpClass(cls):
         cls.X, cls.y = load_regression_data()
-        cls.model = CatBoostRegressorWrapper()
+        cls.model = CatBoostRegressorWrapper(early_stopping_rounds=1)
         cls.base_model = CatBoostRegressor
         cls.objective = Objective.REGRESSION

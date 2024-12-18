@@ -11,6 +11,6 @@ class TestLgmbRegresor(ModelWrapperBase):
     @classmethod
     def setUpClass(cls):
         cls.X, cls.y = load_regression_data()
-        cls.model = LGBMRegressorWrapper()
+        cls.model = LGBMRegressorWrapper(early_stopping_rounds=1)
         cls.base_model = LGBMRegressor
         cls.objective = Objective.REGRESSION

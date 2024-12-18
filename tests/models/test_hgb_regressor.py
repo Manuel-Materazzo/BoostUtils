@@ -12,6 +12,6 @@ class TestHgbRegresor(ModelWrapperBase):
     @classmethod
     def setUpClass(cls):
         cls.X, cls.y = load_regression_data()
-        cls.model = HGBRegressorWrapper()
+        cls.model = HGBRegressorWrapper(early_stopping_rounds=1)
         cls.base_model = HistGradientBoostingRegressor
         cls.objective = Objective.REGRESSION
