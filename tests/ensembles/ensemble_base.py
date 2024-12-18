@@ -69,8 +69,8 @@ for model_module_1, model_module_2 in combinations:
             predict_test_name = f'test_fit_and_predict_{model_name_1.lower()}_{model_name_2.lower()}'
 
             # instantiate model
-            model_instance_1 = model_obj_1()
-            model_instance_2 = model_obj_2()
+            model_instance_1 = model_obj_1(early_stopping_rounds=1)
+            model_instance_2 = model_obj_2(early_stopping_rounds=1)
 
             members_list = [
                 {

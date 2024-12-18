@@ -80,7 +80,7 @@ for model_module, trainer_module in combinations:
             test_name = f'test_tune_{model_name.lower()}_{trainer_name.lower()}'
 
             # instantiate model object and reduce grid space to avoid wasting time
-            model_instance = model_obj()
+            model_instance = model_obj(early_stopping_rounds=1)
             lobotomize_grid_space(model_instance)
 
             # of course, classifiers and regressors have different test cases
