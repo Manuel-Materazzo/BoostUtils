@@ -35,8 +35,7 @@ class DefaultGridOptimizer(HyperparameterOptimizer):
         :return:
         """
         # get optimal boost rounds
-        optimal_br = self.get_optimal_boost_rounds(X, y)
-
+        optimal_br = self.get_optimal_boost_rounds(X, y) or 1
         index = 1
 
         # get a list of spaces to optimize using sequential steps
@@ -46,7 +45,7 @@ class DefaultGridOptimizer(HyperparameterOptimizer):
 
             # recalibrate iteration if needed
             if step_space['recalibrate_iterations']:
-                optimal_br = self.get_optimal_boost_rounds(X, y)
+                optimal_br = self.get_optimal_boost_rounds(X, y) or 1
             # avoid to pass useless arguments to the model
             del step_space['recalibrate_iterations']
 
