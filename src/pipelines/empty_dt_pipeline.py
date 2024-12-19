@@ -19,8 +19,8 @@ class Transform(TransformerMixin):
 
 
 class EmptyDTPipeline(DTPipeline):
-    def __init__(self, X: DataFrame, imputation_enabled: bool):
-        super().__init__(X, imputation_enabled)
+    def __init__(self, X: DataFrame):
+        super().__init__(X)
 
     def build_pipeline(self) -> Pipeline | ColumnTransformer:
         return Pipeline(steps=[('do nothing', Transform())], memory=None)

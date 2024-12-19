@@ -24,20 +24,14 @@ class FunctionalImputer(BaseEstimator, TransformerMixin):
 
 
 class HousingPricesCompetitionDTPipeline(DTPipeline):
-    def __init__(self, X: DataFrame, imputation_enabled: bool):
-        super().__init__(X, imputation_enabled)
+    def __init__(self, X: DataFrame):
+        super().__init__(X)
 
     def build_pipeline(self) -> Pipeline | ColumnTransformer:
 
         # Encoding for categorical data
         categorical_encoder = OrdinalEncoder(handle_unknown='use_encoded_value', unknown_value=-1)
         # categorical_encoder = OneHotEncoder(handle_unknown='ignore', sparse_output=False)
-
-        # if imputation is disabled, just encode categorical columns
-        if not self.imputation_enabled:
-            return ColumnTransformer(transformers=[
-                ('cat', categorical_encoder, self.categorical_cols)
-            ])
 
         # Preprocessing for numerical data
         numerical_transformer = SimpleImputer(strategy='median')

@@ -41,7 +41,7 @@ save_data_model(X)
 
 # instantiate data pipeline and preprocessor
 preprocessor = EmptyDataPreprocessor()
-pipeline = HousingPricesCompetitionDTPipeline(X, True)
+pipeline = HousingPricesCompetitionDTPipeline(X)
 
 # preprocess data
 preprocessor.preprocess_data(X)
