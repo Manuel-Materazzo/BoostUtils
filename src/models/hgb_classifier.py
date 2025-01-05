@@ -123,7 +123,7 @@ class HGBClassifierWrapper(ModelWrapper):
     def get_best_iteration(self) -> int:
         if disabled:
             print(version_mismatch)
-            return None
+            return 0
 
         return self.model.n_iter_
 

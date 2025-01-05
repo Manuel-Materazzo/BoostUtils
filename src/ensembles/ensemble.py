@@ -36,7 +36,7 @@ class Ensemble(ModelInferenceWrapper):
         """
         # if we didn't compute a leaderboard before
         if self.leaderboard is None:
-            leaderboardList: list[LeaderboardEntry] = []
+            leaderboard_list: list[LeaderboardEntry] = []
             self.oof_predictions = DataFrame()
             # train each model in the ensemble
             i = 0
@@ -66,7 +66,7 @@ class Ensemble(ModelInferenceWrapper):
                 accuracy, iterations, prediction_comparisons = trainer.validate_model(X, y, log_level=0, params=params,
                                                                                       output_prediction_comparison=True)
                 # append model results to the leaderboard
-                leaderboardList.append(
+                leaderboard_list.append(
                     LeaderboardEntry(model_name=trainer.get_model_name(), accuracy=accuracy, iterations=iterations)
                 )
 
@@ -74,7 +74,7 @@ class Ensemble(ModelInferenceWrapper):
                 self.oof_predictions[trainer.get_model_name() + '_' + str(i)] = prediction_comparisons['predictions']
                 i += 1
 
-            self.leaderboard: DataFrame = DataFrame.from_records(leaderboardList)
+            self.leaderboard: DataFrame = DataFrame.from_records(leaderboard_list)
             self.leaderboard.sort_values('accuracy', ascending=True, inplace=True)
 
         # prints the leaderboard
