@@ -13,12 +13,12 @@ class TestPipelinesUtils(unittest.TestCase):
         cls.X, cls.y = load_regression_data()
 
     def test_pipeline_find_ohe(self):
-        pipeline = HousingPricesCompetitionDTPipeline(self.X, True)
+        pipeline = HousingPricesCompetitionDTPipeline(self.X)
         ohe = pipeline.find_one_hot_encoder(pipeline.pipeline)
         self.assertIsNone(ohe)
 
     def test_pipeline_save(self):
-        pipeline = HousingPricesCompetitionDTPipeline(self.X, True)
+        pipeline = HousingPricesCompetitionDTPipeline(self.X)
         pipeline.save_pipeline()
         file_path = os.path.dirname(os.path.realpath(__file__)) + '/../target/pipeline.pkl'
         self.assertTrue(os.path.exists(file_path))

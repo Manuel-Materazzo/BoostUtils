@@ -11,7 +11,7 @@ class TestAccurateCrossTrainer(TrainerBase):
     def setUpClass(cls):
         cls.classification_X, cls.classification_y = load_classification_data()
         cls.regression_X, cls.regression_y = load_regression_data()
-        cls.pipeline = HousingPricesCompetitionDTPipeline(cls.regression_X, True)
+        cls.pipeline = HousingPricesCompetitionDTPipeline(cls.regression_X)
         cls.trainer = AccurateCrossTrainer
 
 

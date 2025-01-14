@@ -9,5 +9,5 @@ class TestCustomGridOptimizer(HpOptimizerBase):
     @classmethod
     def setUpClass(cls):
         cls.regression_X, cls.regression_y = load_regression_data()
-        cls.pipeline = HousingPricesCompetitionDTPipeline(cls.regression_X, True)
+        cls.pipeline = HousingPricesCompetitionDTPipeline(cls.regression_X)
         cls.optimizer = CustomGridOptimizer

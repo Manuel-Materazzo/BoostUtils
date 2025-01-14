@@ -54,7 +54,7 @@ class ModelWrapperBase(unittest.TestCase):
 
     def test_fit_and_predict(self):
         if self.model is not None:
-            pipeline = HousingPricesCompetitionDTPipeline(self.X, True)
+            pipeline = HousingPricesCompetitionDTPipeline(self.X)
             train_X = pipeline.fit_transform(self.X)
 
             self.model.fit(train_X, self.y, 10)
@@ -63,7 +63,7 @@ class ModelWrapperBase(unittest.TestCase):
             self.assertIsNotNone(predictions)
 
     def _train_test_split(self):
-        pipeline = HousingPricesCompetitionDTPipeline(self.X, True)
+        pipeline = HousingPricesCompetitionDTPipeline(self.X)
 
         train_X, val_X, train_y, val_y = train_test_split(self.X, self.y, random_state=0)
         train_X = pipeline.fit_transform(train_X)

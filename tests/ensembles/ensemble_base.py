@@ -51,7 +51,7 @@ class EnsembleBase(unittest.TestCase):
 
 
 regression_X, regression_y = load_regression_data()
-pipeline = HousingPricesCompetitionDTPipeline(regression_X, True)
+pipeline = HousingPricesCompetitionDTPipeline(regression_X)
 
 models_modules = []
 
