@@ -6,6 +6,7 @@ import src.models as models
 
 from src.enums.accuracy_metric import AccuracyMetric
 from tests.data_load import load_classification_data, load_regression_data
+import matplotlib.pyplot as plt
 
 
 class TrainerBase(unittest.TestCase):
@@ -29,6 +30,11 @@ class TrainerBase(unittest.TestCase):
 
             accuracy, best_iteration, prediction_comparison = trainer_instance.validate_model(X, y, iterations=10,
                                                                                               output_prediction_comparison=True)
+
+            # disable plot output
+            plt.switch_backend("Agg")
+            plt.ioff()
+
             trainer_instance.show_loss()
             trainer_instance.show_feature_importance(X)
             self.assertGreaterEqual(accuracy, 0)

@@ -9,6 +9,7 @@ from src.pipelines.housing_prices_competition_dt_pipeline import HousingPricesCo
 from src.trainers.cached_accurate_cross_trainer import CachedAccurateCrossTrainer
 from tests.data_load import load_regression_data
 from tests.dynamic_modules import get_local_classes
+import matplotlib.pyplot as plt
 
 
 class EnsembleBase(unittest.TestCase):
@@ -30,6 +31,11 @@ class EnsembleBase(unittest.TestCase):
             ensemble_instance = self.ensemble(members=members)
             ensemble_instance.trials = 3  # lower max trials to speed up testing
             accuracy = ensemble_instance.validate_models_and_show_leaderboard(X, y)
+
+            # disable plot output
+            plt.switch_backend("Agg")
+            plt.ioff()
+
             ensemble_instance.show_weights()
 
             self.assertGreaterEqual(accuracy, 0)
