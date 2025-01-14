@@ -1,0 +1,29 @@
+name: Run tests and send coverage report to codecov
+
+on:
+  workflow_dispatch:
+
+jobs:
+  push-store-image:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: 'Checkout GitHub Action'
+        uses: actions/checkout@main
+
+      - name: Install requirements
+        run: pip install -r requirements.txt
+
+      - name: 'Run tests'
+        run: python -m coverage run -m unittest discover . -p "test*.py"
+
+      - name: 'Collect coverage'
+        run: python -m coverage xml
+
+      - name: 'Upload coverage reports to Codecov'
+        run: |
+          curl -Os https://cli.codecov.io/latest/linux/codecov
+          chmod +x codecov
+          ./codecov --verbose upload-process --fail-on-error -t ${{ secrets.CODECOV_TOKEN }} -n 'service'-${{ github.run_id }} -F service -f coverage.xml

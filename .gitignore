@@ -6,3 +6,5 @@
 /.venv/
 /tests/trainers/catboost_info/
 /tests/hyperparameter_optimizers/catboost_info/
+/.coverage
+/coverage.xml
